@@ -25,3 +25,29 @@ def test_get_safe_summary_redacts_credentials():
     assert "supersecretpass" not in summary["database_target"]
     assert "***" in summary["database_target"]
     assert "@localhost:5432/testdb" in summary["database_target"]
+
+
+def test_production_rejects_development_jwt_secret():
+    try:
+        Settings(
+            ENVIRONMENT="production",
+            JWT_SECRET_KEY="careermate-insecure-dev-secret-key-change-in-production-2026",
+            COOKIE_SECURE=True,
+        )
+    except ValueError as exc:
+        assert "JWT_SECRET_KEY" in str(exc)
+    else:
+        raise AssertionError("Production settings accepted the development JWT secret")
+
+
+def test_production_requires_secure_refresh_cookie():
+    try:
+        Settings(
+            ENVIRONMENT="production",
+            JWT_SECRET_KEY="a" * 64,
+            COOKIE_SECURE=False,
+        )
+    except ValueError as exc:
+        assert "COOKIE_SECURE" in str(exc)
+    else:
+        raise AssertionError("Production settings accepted an insecure refresh cookie")

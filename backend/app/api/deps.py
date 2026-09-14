@@ -33,10 +33,10 @@ def get_current_user(
     token = credentials.credentials
     try:
         payload = decode_access_token(token)
-    except Exception as exc:
+    except Exception:
         raise AuthenticationError(
             message="Invalid or expired access token.",
-            details={"error": str(exc)},
+            details={"auth_scheme": "Bearer"},
         )
 
     # Verify token type is 'access'

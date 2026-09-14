@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 import bcrypt
 import jwt
+import uuid
 
 from app.core.config import settings
 
@@ -35,6 +36,7 @@ def create_access_token(
     payload: Dict[str, Any] = {
         "sub": str(subject),
         "type": "access",
+        "jti": str(uuid.uuid4()),
         "iat": int(now.timestamp()),
         "exp": int(expire.timestamp()),
     }

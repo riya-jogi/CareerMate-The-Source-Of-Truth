@@ -73,6 +73,7 @@ def test_get_me_invalid_token(client):
     data = response.json()
     assert data["error"]["code"] == "AUTHENTICATION_ERROR"
     assert "invalid or expired" in data["error"]["message"].lower()
+    assert data["error"]["details"] == {"auth_scheme": "Bearer"}
 
 
 def test_get_me_wrong_token_type(client, active_user):

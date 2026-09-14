@@ -243,7 +243,7 @@ class TestModule1CompleteFlow:
         )
         assert dup_res.status_code == 409
         dup_data = dup_res.json()
-        assert dup_data["error"]["code"] == "CONFLICT"
+        assert dup_data["error"]["code"] == "RESOURCE_CONFLICT"
         assert "already exists" in dup_data["error"]["message"].lower()
 
         # 2. Wrong password -> 401 Generic invalid credentials
