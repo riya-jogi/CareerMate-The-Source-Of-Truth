@@ -105,7 +105,7 @@ class AuthService:
 
         # Generic failure message to prevent email enumeration
         generic_error = AuthenticationError(
-            message="Invalid email or password.",
+            message="Invalid email or password",
             details={"field": "credentials"},
         )
 

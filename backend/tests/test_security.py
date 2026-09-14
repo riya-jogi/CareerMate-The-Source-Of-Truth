@@ -26,5 +26,6 @@ def test_jwt_token_generation_and_decoding():
 
     assert decoded["sub"] == user_id
     assert decoded["role"] == "candidate"
+    assert uuid.UUID(decoded["jti"])
     assert "exp" in decoded
     assert "iat" in decoded

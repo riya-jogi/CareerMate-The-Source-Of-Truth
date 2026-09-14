@@ -1,5 +1,5 @@
 from typing import List, Union
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -64,6 +64,22 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.ENVIRONMENT.lower() == "production"
+
+    @model_validator(mode="after")
+    def validate_production_security(self) -> "Settings":
+        if not self.is_production:
+            return self
+
+        if (
+            self.JWT_SECRET_KEY == "careermate-insecure-dev-secret-key-change-in-production-2026"
+            or len(self.JWT_SECRET_KEY) < 32
+        ):
+            raise ValueError("JWT_SECRET_KEY must be a unique value of at least 32 characters in production")
+
+        if not self.COOKIE_SECURE:
+            raise ValueError("COOKIE_SECURE must be enabled in production")
+
+        return self
 
     def get_safe_summary(self) -> dict:
         """Returns safe configuration summary with sensitive credentials redacted."""

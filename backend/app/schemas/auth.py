@@ -163,5 +163,6 @@ class LogoutRequest(BaseModel):
 class LogoutResponse(BaseModel):
     """Response confirming session revocation."""
 
+    success: bool = True
     message: str = "Session successfully terminated."
 
