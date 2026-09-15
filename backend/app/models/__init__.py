@@ -20,6 +20,7 @@ from app.models.career import (
     Skill,
 )
 from app.models.resume import ProposalDecision, ProposalType, ResumeFile, ResumeProposal
+from app.models.job import Job, JobAnalysisStatus, JobRequirement, RequirementImportance, RequirementType
 
 __all__ = [
     "Base",
@@ -45,4 +46,9 @@ __all__ = [
     "ClaimType",
     "ClaimStatus",
     "EvidenceSource",
+    "Job",
+    "JobRequirement",
+    "JobAnalysisStatus",
+    "RequirementImportance",
+    "RequirementType",
 ]

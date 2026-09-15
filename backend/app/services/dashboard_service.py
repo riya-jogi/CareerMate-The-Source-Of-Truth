@@ -1,6 +1,9 @@
 import logging
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.models.career import CareerClaim, Evidence
+from app.models.job import Job, JobAnalysisStatus
 from app.models.user import User
 from app.schemas.dashboard import DashboardSummaryResponse
 
@@ -64,11 +67,9 @@ class DashboardService:
 
         headline = profile.headline if profile else None
 
-        # When claims/evidence/jobs/resumes tables are populated in later modules,
-        # these counts will query the database directly.
-        career_claims_count = 0
-        evidence_sources_count = 0
-        analyzed_jobs_count = 0
+        career_claims_count = db.scalar(select(func.count(CareerClaim.id)).where(CareerClaim.career_profile_id == profile.id)) if profile else 0
+        evidence_sources_count = db.scalar(select(func.count(Evidence.id)).where(Evidence.career_profile_id == profile.id)) if profile else 0
+        analyzed_jobs_count = db.scalar(select(func.count(Job.id)).where(Job.user_id == user.id, Job.analysis_status == JobAnalysisStatus.COMPLETED)) or 0
         optimized_resumes_count = 0
         target_matches_count = 0
 

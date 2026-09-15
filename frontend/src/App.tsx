@@ -12,7 +12,8 @@ import { Profile } from './pages/Profile';
 import { Resumes } from './pages/Resumes';
 import { Claims } from './pages/Claims';
 import { CareerData } from './pages/CareerData';
-import { UserCheck, Briefcase, GitCompare, Wand2, Settings } from 'lucide-react';
+import { Jobs } from './pages/Jobs';
+import { UserCheck, GitCompare, Wand2, Settings } from 'lucide-react';
 
 export const App: React.FC = () => {
   return (
@@ -47,17 +48,7 @@ export const App: React.FC = () => {
                 }
               />
               <Route path="resumes" element={<Resumes />} />
-              <Route
-                path="jobs"
-                element={
-                  <PlaceholderPage
-                    title="Job Description Analysis"
-                    moduleName="Module 4: JD Analyzer"
-                    description="Paste job descriptions to extract required vs. preferred criteria and normalize skill terminology."
-                    icon={Briefcase}
-                  />
-                }
-              />
+              <Route path="jobs" element={<Jobs />} />
               <Route
                 path="matching"
                 element={
