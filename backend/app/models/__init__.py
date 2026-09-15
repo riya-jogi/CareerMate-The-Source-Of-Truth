@@ -22,6 +22,7 @@ from app.models.career import (
 from app.models.resume import ProposalDecision, ProposalType, ResumeFile, ResumeProposal
 from app.models.job import Job, JobAnalysisStatus, JobRequirement, RequirementImportance, RequirementType
 from app.models.matching import CandidateJobMatch, MatchAnalysisStatus, MatchDetail, MatchType
+from app.models.resume_version import Approval, ApprovalDecision, ChangeType, Resume, ResumeChange, ResumeVersion, ResumeVersionStatus, ValidationStatus
 
 __all__ = [
     "Base",
@@ -56,4 +57,12 @@ __all__ = [
     "MatchDetail",
     "MatchType",
     "MatchAnalysisStatus",
+    "Resume",
+    "ResumeVersion",
+    "ResumeChange",
+    "Approval",
+    "ResumeVersionStatus",
+    "ChangeType",
+    "ApprovalDecision",
+    "ValidationStatus",
 ]
