@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     DB_POOL_TIMEOUT: int = 30
     DB_POOL_PRE_PING: bool = True
 
+    STORAGE_PATH: str = "storage"
+    MAX_RESUME_FILE_SIZE: int = 10 * 1024 * 1024
+
     # Security & JWT Authentication
     JWT_SECRET_KEY: str = Field(
         default="careermate-insecure-dev-secret-key-change-in-production-2026",

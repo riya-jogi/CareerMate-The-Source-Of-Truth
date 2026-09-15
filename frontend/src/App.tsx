@@ -10,6 +10,8 @@ import { Dashboard } from './pages/Dashboard';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { Profile } from './pages/Profile';
 import { Resumes } from './pages/Resumes';
+import { Claims } from './pages/Claims';
+import { CareerData } from './pages/CareerData';
 import { UserCheck, Briefcase, GitCompare, Wand2, Settings } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -29,6 +31,8 @@ export const App: React.FC = () => {
               <Route index element={<Navigate to="/app/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="claims" element={<Claims />} />
+              <Route path="career-data" element={<CareerData />} />
 
               {/* Future Modules Planned in Architecture */}
               <Route

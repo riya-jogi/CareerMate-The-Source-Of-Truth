@@ -24,6 +24,8 @@ def upgrade() -> None:
         sa.Column("filename", sa.String(length=255), nullable=False),
         sa.Column("content_type", sa.String(length=100), nullable=False),
         sa.Column("content", sa.Text(), nullable=False),
+        sa.Column("storage_key", sa.String(length=500), nullable=True),
+        sa.Column("checksum", sa.String(length=64), nullable=True),
         sa.Column("file_size", sa.Integer(), nullable=False, server_default="0"),
         sa.Column("status", sa.String(length=30), nullable=False, server_default="uploaded"),
         sa.Column("extracted_at", sa.DateTime(timezone=True), nullable=True),
@@ -34,6 +36,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index("ix_resume_files_career_profile_id", "resume_files", ["career_profile_id"])
+    op.create_index("ix_resume_files_checksum", "resume_files", ["checksum"])
 
     op.create_table(
         "resume_proposals",
@@ -58,4 +61,5 @@ def downgrade() -> None:
     op.drop_index("ix_resume_proposals_resume_file_id", table_name="resume_proposals")
     op.drop_table("resume_proposals")
     op.drop_index("ix_resume_files_career_profile_id", table_name="resume_files")
+    op.drop_index("ix_resume_files_checksum", table_name="resume_files")
     op.drop_table("resume_files")

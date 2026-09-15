@@ -30,6 +30,34 @@ class ClaimService:
         return claim
 
     @staticmethod
+    def list_claims(db: Session, user: User) -> list[CareerClaim]:
+        profile = ClaimService.get_profile_claims(db, user)
+        return db.execute(
+            select(CareerClaim).where(CareerClaim.career_profile_id == profile.id).order_by(CareerClaim.created_at.desc())
+        ).scalars().all()
+
+    @staticmethod
+    def update_claim(db: Session, user: User, claim_id: uuid.UUID, payload) -> CareerClaim:
+        claim = ClaimService._get_claim_for_user(db, user, claim_id)
+        for field, value in payload.model_dump(exclude_unset=True).items():
+            setattr(claim, field, value)
+        if claim.status == ClaimStatus.CANDIDATE_CONFIRMED:
+            claim.status = ClaimStatus.SELF_DECLARED
+            claim.confidence = 0.5
+            claim.candidate_confirmed_at = None
+        db.flush()
+        return claim
+
+    @staticmethod
+    def reject_claim(db: Session, user: User, claim_id: uuid.UUID) -> CareerClaim:
+        claim = ClaimService._get_claim_for_user(db, user, claim_id)
+        claim.status = ClaimStatus.UNSUPPORTED
+        claim.confidence = 0.0
+        claim.candidate_confirmed_at = None
+        db.flush()
+        return claim
+
+    @staticmethod
     def create_claim(db: Session, user: User, payload) -> CareerClaim:
         profile = ClaimService.get_profile_claims(db, user)
         claim = CareerClaim(
