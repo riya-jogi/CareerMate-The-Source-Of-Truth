@@ -7,14 +7,14 @@ import { AppLayout } from './components/layout/AppLayout';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 import { Dashboard } from './pages/Dashboard';
-import { PlaceholderPage } from './pages/PlaceholderPage';
 import { Profile } from './pages/Profile';
 import { Resumes } from './pages/Resumes';
 import { Claims } from './pages/Claims';
 import { CareerData } from './pages/CareerData';
 import { Jobs } from './pages/Jobs';
 import { Matching } from './pages/Matching';
-import { UserCheck, Wand2, Settings } from 'lucide-react';
+import { Optimization } from './pages/Optimization';
+import { Settings } from './pages/Settings';
 
 export const App: React.FC = () => {
   return (
@@ -32,47 +32,26 @@ export const App: React.FC = () => {
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Navigate to="/app/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
+
+              {/* Module 2: Career Source of Truth */}
               <Route path="profile" element={<Profile />} />
               <Route path="claims" element={<Claims />} />
               <Route path="career-data" element={<CareerData />} />
 
-              {/* Future Modules Planned in Architecture */}
-              <Route
-                path="profile-legacy"
-                element={
-                  <PlaceholderPage
-                    title="Career Profile & Evidence Anchor"
-                    moduleName="Module 2: Career Profile"
-                    description="Maintain your persistent career history, verified factual claims, and supporting evidence sources."
-                    icon={UserCheck}
-                  />
-                }
-              />
+              {/* Module 3: Resume Ingestion */}
               <Route path="resumes" element={<Resumes />} />
+
+              {/* Module 4: Job Description Analysis */}
               <Route path="jobs" element={<Jobs />} />
+
+              {/* Module 5: Candidate-Job Matching */}
               <Route path="matching" element={<Matching />} />
-              <Route
-                path="optimization"
-                element={
-                  <PlaceholderPage
-                    title="Truth-Validated Resume Optimizer"
-                    moduleName="Module 6: Resume Optimizer"
-                    description="Generate job-specific resumes strictly validated against your trusted career claims and candidate evidence."
-                    icon={Wand2}
-                  />
-                }
-              />
-              <Route
-                path="settings"
-                element={
-                  <PlaceholderPage
-                    title="Account & Security Settings"
-                    moduleName="Security"
-                    description="Manage account credentials, active login sessions, and data privacy options."
-                    icon={Settings}
-                  />
-                }
-              />
+
+              {/* Module 6 & 7: Truth-Validated Optimization & Resume Generation */}
+              <Route path="optimization" element={<Optimization />} />
+
+              {/* Account & Security Settings */}
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Route>
 
