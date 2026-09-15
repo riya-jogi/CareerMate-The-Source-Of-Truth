@@ -1,1 +1,0 @@
-Senior Python engineer with FastAPI, PostgreSQL, and Docker. Built backend APIs.

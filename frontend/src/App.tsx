@@ -13,7 +13,8 @@ import { Resumes } from './pages/Resumes';
 import { Claims } from './pages/Claims';
 import { CareerData } from './pages/CareerData';
 import { Jobs } from './pages/Jobs';
-import { UserCheck, GitCompare, Wand2, Settings } from 'lucide-react';
+import { Matching } from './pages/Matching';
+import { UserCheck, Wand2, Settings } from 'lucide-react';
 
 export const App: React.FC = () => {
   return (
@@ -49,17 +50,7 @@ export const App: React.FC = () => {
               />
               <Route path="resumes" element={<Resumes />} />
               <Route path="jobs" element={<Jobs />} />
-              <Route
-                path="matching"
-                element={
-                  <PlaceholderPage
-                    title="Candidate-Job Matching Engine"
-                    moduleName="Module 5: Compatibility Engine"
-                    description="Transparent exact, normalized, and semantic matching with explainable gap breakdowns."
-                    icon={GitCompare}
-                  />
-                }
-              />
+              <Route path="matching" element={<Matching />} />
               <Route
                 path="optimization"
                 element={
