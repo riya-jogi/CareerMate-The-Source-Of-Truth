@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
+    from app.models.career import CandidateSkill, Certification, Education, Experience, Project
     from app.models.user import User
 
 
@@ -53,6 +54,22 @@ class CareerProfile(Base, UUIDMixin, TimestampMixin):
     portfolio_url: Mapped[Optional[str]] = mapped_column(
         String(255),
         nullable=True,
+    )
+
+    experiences: Mapped[list["Experience"]] = relationship(
+        "Experience", back_populates="career_profile", cascade="all, delete-orphan"
+    )
+    projects: Mapped[list["Project"]] = relationship(
+        "Project", back_populates="career_profile", cascade="all, delete-orphan"
+    )
+    education: Mapped[list["Education"]] = relationship(
+        "Education", back_populates="career_profile", cascade="all, delete-orphan"
+    )
+    certifications: Mapped[list["Certification"]] = relationship(
+        "Certification", back_populates="career_profile", cascade="all, delete-orphan"
+    )
+    candidate_skills: Mapped[list["CandidateSkill"]] = relationship(
+        "CandidateSkill", back_populates="career_profile", cascade="all, delete-orphan"
     )
 
     user: Mapped["User"] = relationship(

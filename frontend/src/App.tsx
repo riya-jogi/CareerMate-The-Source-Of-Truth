@@ -8,6 +8,7 @@ import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 import { Dashboard } from './pages/Dashboard';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { Profile } from './pages/Profile';
 import { UserCheck, FileText, Briefcase, GitCompare, Wand2, Settings } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -26,10 +27,11 @@ export const App: React.FC = () => {
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Navigate to="/app/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<Profile />} />
 
               {/* Future Modules Planned in Architecture */}
               <Route
-                path="profile"
+                path="profile-legacy"
                 element={
                   <PlaceholderPage
                     title="Career Profile & Evidence Anchor"
