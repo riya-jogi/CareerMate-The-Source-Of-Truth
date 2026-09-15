@@ -1,9 +1,9 @@
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from typing import TYPE_CHECKING, Optional
 import uuid
 
-from sqlalchemy import Date, ForeignKey, Numeric, String, Text, UniqueConstraint
+from sqlalchemy import Date, DateTime, ForeignKey, Numeric, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -34,6 +34,33 @@ class Proficiency(str, Enum):
     INTERMEDIATE = "intermediate"
     ADVANCED = "advanced"
     EXPERT = "expert"
+
+
+class ClaimType(str, Enum):
+    SKILL = "skill"
+    RESPONSIBILITY = "responsibility"
+    ACHIEVEMENT = "achievement"
+    PROJECT = "project"
+    EXPERIENCE = "experience"
+    EDUCATION = "education"
+    CERTIFICATION = "certification"
+
+
+class ClaimStatus(str, Enum):
+    EVIDENCE_BACKED = "evidence_backed"
+    CANDIDATE_CONFIRMED = "candidate_confirmed"
+    SELF_DECLARED = "self_declared"
+    NEEDS_CLARIFICATION = "needs_clarification"
+    UNSUPPORTED = "unsupported"
+
+
+class EvidenceSource(str, Enum):
+    RESUME = "resume"
+    CANDIDATE_INPUT = "candidate_input"
+    PROJECT_DESCRIPTION = "project_description"
+    EXPERIENCE_DESCRIPTION = "experience_description"
+    CERTIFICATION = "certification"
+    OTHER = "other"
 
 
 class Experience(Base, UUIDMixin, TimestampMixin):
@@ -133,3 +160,64 @@ class CandidateSkill(Base, UUIDMixin, TimestampMixin):
 
     career_profile: Mapped["CareerProfile"] = relationship("CareerProfile", back_populates="candidate_skills")
     skill: Mapped[Skill] = relationship("Skill", back_populates="candidate_skills")
+
+
+class CareerClaim(Base, UUIDMixin, TimestampMixin):
+    __tablename__ = "career_claims"
+
+    career_profile_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("career_profiles.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    claim_type: Mapped[ClaimType] = mapped_column(String(30), nullable=False, default=ClaimType.SKILL)
+    claim_text: Mapped[str] = mapped_column(Text, nullable=False)
+    subject: Mapped[str] = mapped_column(String(255), nullable=False)
+    context: Mapped[Optional[str]] = mapped_column(Text)
+    experience_type: Mapped[ExperienceType] = mapped_column(String(30), default=ExperienceType.PROFESSIONAL, nullable=False)
+    start_date: Mapped[Optional[date]] = mapped_column(Date)
+    end_date: Mapped[Optional[date]] = mapped_column(Date)
+    proficiency: Mapped[Optional[Proficiency]] = mapped_column(String(30))
+    skill_name: Mapped[Optional[str]] = mapped_column(String(150))
+    status: Mapped[ClaimStatus] = mapped_column(String(30), default=ClaimStatus.UNSUPPORTED, nullable=False)
+    confidence: Mapped[float] = mapped_column(Numeric(4, 2), default=0.0, nullable=False)
+    candidate_confirmed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+    career_profile: Mapped["CareerProfile"] = relationship("CareerProfile", back_populates="career_claims")
+    evidence_links: Mapped[list["ClaimEvidence"]] = relationship(
+        "ClaimEvidence",
+        back_populates="career_claim",
+        cascade="all, delete-orphan",
+    )
+
+
+class Evidence(Base, UUIDMixin, TimestampMixin):
+    __tablename__ = "evidence"
+
+    career_profile_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("career_profiles.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    source_type: Mapped[EvidenceSource] = mapped_column(String(30), nullable=False, default=EvidenceSource.CANDIDATE_INPUT)
+    source_reference: Mapped[str] = mapped_column(String(255), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    content_hash: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
+
+    career_profile: Mapped["CareerProfile"] = relationship("CareerProfile", back_populates="evidence")
+    claim_links: Mapped[list["ClaimEvidence"]] = relationship(
+        "ClaimEvidence",
+        back_populates="evidence",
+        cascade="all, delete-orphan",
+    )
+
+
+class ClaimEvidence(Base, UUIDMixin, TimestampMixin):
+    __tablename__ = "claim_evidence"
+    __table_args__ = (UniqueConstraint("claim_id", "evidence_id", name="uq_claim_evidence"),)
+
+    claim_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("career_claims.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    evidence_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("evidence.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+
+    career_claim: Mapped[CareerClaim] = relationship("CareerClaim", back_populates="evidence_links")
+    evidence: Mapped[Evidence] = relationship("Evidence", back_populates="claim_links")

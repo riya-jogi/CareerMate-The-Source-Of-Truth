@@ -9,7 +9,8 @@ import { SignUp } from './pages/SignUp';
 import { Dashboard } from './pages/Dashboard';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { Profile } from './pages/Profile';
-import { UserCheck, FileText, Briefcase, GitCompare, Wand2, Settings } from 'lucide-react';
+import { Resumes } from './pages/Resumes';
+import { UserCheck, Briefcase, GitCompare, Wand2, Settings } from 'lucide-react';
 
 export const App: React.FC = () => {
   return (
@@ -41,17 +42,7 @@ export const App: React.FC = () => {
                   />
                 }
               />
-              <Route
-                path="resumes"
-                element={
-                  <PlaceholderPage
-                    title="Resume Ingestion & Parsing"
-                    moduleName="Module 3: Resume Processing"
-                    description="Import existing PDF/DOCX resumes and review AI-proposed structured profile extractions."
-                    icon={FileText}
-                  />
-                }
-              />
+              <Route path="resumes" element={<Resumes />} />
               <Route
                 path="jobs"
                 element={
