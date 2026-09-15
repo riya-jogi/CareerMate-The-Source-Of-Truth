@@ -78,7 +78,8 @@ class JobService:
         years_match = re.search(r"(?:(\d+)\s*\+?\s*(?:years|yrs)|(?:at least|minimum of)\s*(\d+)\s*years)", lower_text)
         if years_match:
             years = int(next(value for value in years_match.groups() if value))
-            requirements.append(JobRequirement(job_id=job.id, requirement_text=years_match.group(0), requirement_type=RequirementType.EXPERIENCE, importance=RequirementImportance.REQUIRED, minimum_years=years, experience_type="professional"))
+            associated_skill = next((canonical for alias, canonical in KNOWN_SKILLS.items() if re.search(rf"(?<![a-z0-9]){re.escape(alias)}(?![a-z0-9])", lower_text)), None)
+            requirements.append(JobRequirement(job_id=job.id, requirement_text=f"{years_match.group(0)} {associated_skill or 'professional experience'}", requirement_type=RequirementType.EXPERIENCE, importance=RequirementImportance.REQUIRED, skill_name=associated_skill, minimum_years=years, experience_type="professional"))
 
         if re.search(r"bachelor|master|degree|b\.s\.|b\.tech|m\.s\.|m\.tech", lower_text):
             requirements.append(JobRequirement(job_id=job.id, requirement_text="Relevant degree or educational qualification", requirement_type=RequirementType.EDUCATION, importance=RequirementImportance.REQUIRED))

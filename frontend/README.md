@@ -1,32 +1,82 @@
-# React + TypeScript + Vite
+# CareerMate Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This directory contains the React + TypeScript frontend for the CareerMate platform.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The frontend is the user-facing application for:
 
-## React Compiler
+- authentication and session management
+- profile creation and editing
+- resume upload and review
+- job browsing and matching
+- ATS and resume optimization workflows
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the Oxlint configuration
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Lucide React icons
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Prerequisites
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- Node.js 18+
+- npm
+- The backend running locally on port 8000
+
+## Setup
+
+From the `frontend` folder:
+
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Run in development mode
+
+```bash
+npm run dev
+```
+
+The app should open on:
+
+- http://localhost:5173
+
+## Production build
+
+```bash
+npm run build
+```
+
+To preview the production build:
+
+```bash
+npm run preview
+```
+
+## Linting
+
+```bash
+npm run lint
+```
+
+## Notes
+
+- The project uses Vite and the default React plugin setup.
+- The backend API is expected to be available at `http://localhost:8000`.
+- If needed, update the API base URL in the frontend client configuration or service layer.
+
+## Typical workflow
+
+1. Start PostgreSQL from the project root with Docker.
+2. Start the backend API from `backend/`.
+3. Run the frontend from `frontend/`.
+4. Register or sign in and use the app.
+
+---
+
+For root setup instructions, see [../README.md](../README.md).
+For backend setup instructions, see [../backend/README.md](../backend/README.md).

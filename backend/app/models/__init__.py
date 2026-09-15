@@ -21,6 +21,7 @@ from app.models.career import (
 )
 from app.models.resume import ProposalDecision, ProposalType, ResumeFile, ResumeProposal
 from app.models.job import Job, JobAnalysisStatus, JobRequirement, RequirementImportance, RequirementType
+from app.models.matching import CandidateJobMatch, MatchAnalysisStatus, MatchDetail, MatchType
 
 __all__ = [
     "Base",
@@ -51,4 +52,8 @@ __all__ = [
     "JobAnalysisStatus",
     "RequirementImportance",
     "RequirementType",
+    "CandidateJobMatch",
+    "MatchDetail",
+    "MatchType",
+    "MatchAnalysisStatus",
 ]
