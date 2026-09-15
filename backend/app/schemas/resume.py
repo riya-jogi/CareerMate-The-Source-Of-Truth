@@ -19,6 +19,7 @@ class ProposalDecision(str, Enum):
     PENDING = "pending"
     ACCEPTED = "accepted"
     REJECTED = "rejected"
+    EDITED = "edited"
 
 
 class ResumeUploadCreate(BaseModel):
@@ -67,6 +68,7 @@ class ResumeProposalRead(BaseModel):
 class ResumeProposalReview(BaseModel):
     decision: ProposalDecision
     notes: Optional[str] = Field(None, max_length=2000)
+    proposed_value: Optional[str] = Field(None, min_length=1, max_length=4000)
 
 
 class ResumeExtractionResponse(BaseModel):

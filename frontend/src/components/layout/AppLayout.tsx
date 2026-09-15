@@ -66,6 +66,8 @@ export const AppLayout: React.FC = () => {
   const navItems = [
     { label: 'Dashboard', path: '/app/dashboard', icon: LayoutDashboard, tag: 'Module 1' },
     { label: 'Career Profile', path: '/app/profile', icon: UserCheck, tag: 'Module 2' },
+    { label: 'Claims Review', path: '/app/claims', icon: CheckCircle2, tag: 'Truth Layer' },
+    { label: 'Career Data', path: '/app/career-data', icon: FileText, tag: 'Module 2' },
     { label: 'Resumes', path: '/app/resumes', icon: FileText, tag: 'Module 3' },
     { label: 'Jobs', path: '/app/jobs', icon: Briefcase, tag: 'Module 4' },
     { label: 'Matching', path: '/app/matching', icon: GitCompare, tag: 'Module 5' },

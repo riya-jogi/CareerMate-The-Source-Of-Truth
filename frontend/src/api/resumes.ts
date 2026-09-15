@@ -10,6 +10,15 @@ export const resumeApi = {
       body: JSON.stringify(payload),
     }),
 
+  uploadFile: async (file: File): Promise<ResumeFile> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiClient<ResumeFile>('/resumes/upload/file', {
+      method: 'POST',
+      body: formData,
+    });
+  },
+
   extract: async (resumeId: string): Promise<ResumeExtractionResponse> =>
     apiClient<ResumeExtractionResponse>(`/resumes/${resumeId}/extract`, {
       method: 'POST',

@@ -37,9 +37,9 @@ export interface CareerProfile {
   github_url?: string | null;
   portfolio_url?: string | null;
   experiences: Experience[];
-  projects: unknown[];
-  education: unknown[];
-  certifications: unknown[];
+  projects: import('./career').Project[];
+  education: import('./career').Education[];
+  certifications: import('./career').Certification[];
   skills: CandidateSkill[];
   created_at: string;
   updated_at: string;

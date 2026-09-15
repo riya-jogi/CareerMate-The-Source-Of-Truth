@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 import type { CareerProfile, Experience, CandidateSkill } from '../types/profile';
+import type { Certification, Education, Project } from '../types/career';
 
 export interface ProfileUpdate {
   headline?: string;
@@ -34,4 +35,13 @@ export const profileApi = {
       body: JSON.stringify({ name, experience_type: 'professional' }),
     }),
   deleteSkill: (id: string) => apiClient<void>(`/profile/skills/${id}`, { method: 'DELETE' }),
+  addProject: (payload: { name: string; description: string; project_type: string }) =>
+    apiClient<Project>('/profile/projects', { method: 'POST', body: JSON.stringify(payload) }),
+  deleteProject: (id: string) => apiClient<void>(`/profile/projects/${id}`, { method: 'DELETE' }),
+  addEducation: (payload: { institution: string; degree: string; field_of_study?: string }) =>
+    apiClient<Education>('/profile/education', { method: 'POST', body: JSON.stringify(payload) }),
+  deleteEducation: (id: string) => apiClient<void>(`/profile/education/${id}`, { method: 'DELETE' }),
+  addCertification: (payload: { name: string; issuing_organization: string }) =>
+    apiClient<Certification>('/profile/certifications', { method: 'POST', body: JSON.stringify(payload) }),
+  deleteCertification: (id: string) => apiClient<void>(`/profile/certifications/${id}`, { method: 'DELETE' }),
 };

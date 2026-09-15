@@ -36,7 +36,7 @@ export async function apiClient<T>(endpoint: string, options: RequestOptions = {
   const url = endpoint.startsWith('http') ? endpoint : endpoint.startsWith('/api') ? endpoint : `/api/v1${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
   const requestHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
+    ...(restOptions.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
     ...(headers as Record<string, string>),
   };
 

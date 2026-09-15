@@ -36,6 +36,15 @@ class CareerClaimRead(CareerClaimCreate):
     updated_at: datetime
 
 
+class CareerClaimUpdate(BaseModel):
+    claim_text: Optional[str] = Field(None, min_length=1, max_length=2000)
+    subject: Optional[str] = Field(None, min_length=1, max_length=255)
+    context: Optional[str] = Field(None, max_length=2000)
+    experience_type: Optional[ExperienceType] = None
+    proficiency: Optional[Proficiency] = None
+    skill_name: Optional[str] = Field(None, max_length=150)
+
+
 class EvidenceCreate(BaseModel):
     source_type: EvidenceSource = EvidenceSource.CANDIDATE_INPUT
     source_reference: str = Field(..., min_length=1, max_length=255)

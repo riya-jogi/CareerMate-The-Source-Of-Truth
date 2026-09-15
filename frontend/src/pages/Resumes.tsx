@@ -13,6 +13,7 @@ export const Resumes: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [resumeText, setResumeText] = useState(defaultResumeText);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [resumes, setResumes] = useState<ResumeFile[]>([]);
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
@@ -83,6 +84,7 @@ export const Resumes: React.FC = () => {
       const cleanedText = fileText.trim() || defaultResumeText;
       setResumeText(cleanedText);
       setSelectedFileName(file.name);
+      setSelectedFile(file);
       setSuccess(`Loaded ${file.name}. You can review and upload it below.`);
       setError(null);
     } catch (err: any) {
@@ -131,11 +133,13 @@ export const Resumes: React.FC = () => {
 
     try {
       const resolvedFileName = selectedFileName || `resume-${Date.now()}.txt`;
-      const uploaded = await resumeApi.upload({
-        filename: resolvedFileName,
-        content_type: selectedFileName?.toLowerCase().endsWith('.txt') ? 'text/plain' : 'text/plain',
-        content: resumeText,
-      });
+      const uploaded = selectedFile
+        ? await resumeApi.uploadFile(selectedFile)
+        : await resumeApi.upload({
+            filename: resolvedFileName,
+            content_type: 'text/plain',
+            content: resumeText,
+          });
 
       setSelectedResumeId(uploaded.id);
       const extracted = await resumeApi.extract(uploaded.id);
@@ -232,7 +236,7 @@ export const Resumes: React.FC = () => {
                 ref={fileInputRef}
                 type="file"
                 className="hidden"
-                accept=".txt,.md,.csv,.json,.xml,.pdf,.docx,text/plain,text/markdown,text/csv,application/json,application/xml,text/xml,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept=".txt,.md,.pdf,.docx,text/plain,text/markdown,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={(event) => handleFileSelect(event.target.files?.[0])}
               />
             </div>

@@ -40,6 +40,8 @@ class ResumeFile(Base, UUIDMixin, TimestampMixin):
     filename: Mapped[str] = mapped_column(String(255), nullable=False)
     content_type: Mapped[str] = mapped_column(String(100), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
+    storage_key: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    checksum: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
     file_size: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     status: Mapped[str] = mapped_column(String(30), default="uploaded", nullable=False)
     extracted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
